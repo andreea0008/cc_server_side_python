@@ -1,0 +1,11 @@
+
+.idea/
+.venv/
+.vscode/
+
+*.pyc
+*.log
+*.sqlite3
+
+settings_local.py
+local_settings.py
