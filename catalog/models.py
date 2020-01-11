@@ -62,7 +62,7 @@ class Cafe(models.Model) :
 
     #SCHEDULE
     schedule = models.TextField(max_length=400, blank=True, null=True)
-    s = ListFi
+    # s = ListFi
 
     '''
     #IF WORKS EVERY DAY
