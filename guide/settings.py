@@ -135,3 +135,8 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.JSONParser',
     ]
 }
+
+try:
+    from settings_local import *
+except ImportError:
+    pass
