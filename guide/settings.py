@@ -133,9 +133,9 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         perm
     ],
-    # 'DEFAULT_AUTHENTICATED_CLASSES': [
-    #     'rest_framework_simplejwt.authentication.JWTAuthentication'
-    # ],
+    'DEFAULT_AUTHENTICATED_CLASSES': [
+        'rest_framework_simplejwt.authentication.JWTAuthentication'
+    ],
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
     ]
