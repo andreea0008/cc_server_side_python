@@ -123,10 +123,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+if not DEBUG:
+    perm = 'rest_framework.permissions.IsAuthenticated'
+else:
+    # TODO maybe remove it. 
+    perm = 'rest_framework.permissions.AllowAny'
 
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
+        perm
     ],
     'DEFAULT_AUTHENTICATED_CLASSES': [
         'rest_framework_simplejwt.authentication.JWTAuthentication'
@@ -135,3 +140,8 @@ REST_FRAMEWORK = {
         'rest_framework.parsers.JSONParser',
     ]
 }
+
+try:
+    from settings_local import *
+except ImportError:
+    pass

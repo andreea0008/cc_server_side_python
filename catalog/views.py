@@ -30,3 +30,11 @@ class CafeView(viewsets.ModelViewSet):
     serializer_class = CafeSerializer
 
 
+class WorkingScheduleView(viewsets.ModelViewSet):
+    queryset = WorkingSchedule.objects.all()
+    serializer_class = WorkingScheduleSerializer
+
+
+class HolidayScheduleView(viewsets.ModelViewSet):
+    queryset = HolidaySchedule.objects.all()
+    serializer_class = HolidayScheduleSerializer
