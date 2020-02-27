@@ -7,10 +7,11 @@ router = routers.DefaultRouter()
 router.register('category', views.CategoryView)
 router.register('country', views.CountryView)
 router.register('city', views.CityView)
-router.register('cafe', views.CafeView)
+router.register('public-place', views.PublicPlaceView)
 router.register('working-schedule', views.WorkingScheduleView)
 router.register('holiday-schedule', views.HolidayScheduleView)
-
+router.register('social', views.SocialNetworkView)
+router.register('address', views.AddressView)
 
 urlpatterns = [
     path('', include(router.urls)),
