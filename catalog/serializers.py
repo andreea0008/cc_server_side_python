@@ -54,18 +54,72 @@ class SocialSerializer(serializers.ModelSerializer):
         fields = ['name_social_network', 'link_social_network']
 
 
-class AddressSerializer(serializers.ModelSerializer):
+class PhonesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Address
+        model = Phones
         fields = '__all__'
-        # fields = ['address', 'lat', 'lng']
+
+
+class LocationsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Location
+        fields = '__all__'
+
+
+class CommentsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = '__all__'
+
+
+class CategoryEventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CategoryEvent
+        fields = ['categoryName']
+
+
+class ActorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Actor
+        fields = '__all__'
+
+
+class MovieSerializer(serializers.ModelSerializer):
+    actor = ActorSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Movie
+        fields = '__all__'
+
+
+class ImageEventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImageEvent
+        fields = ['image']
+
+
+class EventItemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EventItem
+        fields = '__all__'
+
+
+class EventSerializer(serializers.ModelSerializer):
+    movie = MovieSerializer(many=True, read_only=True)
+    images = ImageEventSerializer(many=True, read_only=True, source='image_event')
+
+    class Meta:
+        model = Event
+        fields = '__all__'
 
 
 class PublicPlaceSerializer(serializers.ModelSerializer):
     working_days_schedule = WorkingScheduleNestedSerializer(many=True, read_only=True)
     holidays_schedule = HolidayScheduleNestedSerializer(many=True, read_only=True)
     social = SocialSerializer(many=True, read_only=True)
-    address = AddressSerializer(many=True, read_only=True)
+    phones = PhonesSerializer(many=True, read_only=True)
+    location = LocationsSerializer(many=True, read_only=True, source='locations')
+    event = EventSerializer(many=True, read_only=True)
 
     class Meta:
         model = PublicPlace

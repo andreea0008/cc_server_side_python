@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import CharField
 
 
 class Category(models.Model):
@@ -27,28 +28,9 @@ class PublicPlace(models.Model):
     country = models.ForeignKey(Country, on_delete=models.CASCADE, null=True, blank=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
-    # image_use = models.BooleanField('Use image', default=False)
-    # image = models.ImageField('Logo', null=True)
-    # cousine = models.TextField(max_length=200, null=True)
 
-    # address
-    # TODO chek it: A good rule of thumb is that you use CharField when you need to limit the maximum length, TextField otherwise. 
+    # TODO chek it: A good rule of thumb is that you use CharField when you need to limit the maximum length, TextField otherwise.
     # from https://stackoverflow.com/questions/7354588/django-charfield-vs-textfield
-    # address = models.CharField(max_length=50, null=True)
-    # address_pattern_lat = models.CharField(max_length=15, null=True)
-    # address_pattern_lng = models.CharField(max_length=15, null=True)
-
-    # socials
-    # social_www = models.TextField(max_length=50, blank=True, null=True)
-    # social_facebook = models.TextField(max_length=50, blank=True, null=True)
-    # social_instagram = models.TextField(max_length=50, blank=True, null=True)
-    # social_email = models.TextField(max_length=50, blank=True, null=True)
-
-    # phones
-    # phone_home = models.TextField(max_length=15, null=True)
-    # phone_kyivstar = models.TextField(max_length=15, null=True)
-    # phone_vodephone = models.TextField(max_length=15, null=True)
-    # phone_lifecell = models.TextField(max_length=15, null=True)
 
     def __str__(self):
         return self.name_company
@@ -96,10 +78,61 @@ class Social(models.Model):
     link_social_network = models.TextField(blank=True, null=True)
 
 
-# Addresses
-class Address(models.Model):
-    """It is for address component"""
-    public_place = models.ForeignKey(PublicPlace, on_delete=models.CASCADE, related_name='addresses')
-    address = models.TextField(blank=True, null=True, max_length=50)
+class Phones(models.Model):
+    """It's for phone component"""
+    OPERATORS = [('kyivstar', "Kyivstar"), ("vodaphone", "Vodaphone")]
+
+    social_place = models.ForeignKey(PublicPlace, on_delete=models.CASCADE, related_name='phones')
+    operatorPhone = models.CharField(blank=True, null=True, choices=OPERATORS, max_length=20)
+    phone = models.CharField(blank=True, null=True, max_length=20)
+
+
+class Location(models.Model):
+    """It's for address or location public place component"""
+    public_place = models.ForeignKey(PublicPlace, on_delete=models.CASCADE, related_name="locations")
+    address_location = models.TextField(blank=True, null=True)
     lat = models.TextField(blank=True, null=True, max_length=15)
     lng = models.TextField(blank=True, null=True, max_length=15)
+
+
+class Comment(models.Model):
+    public_place = models.ForeignKey(PublicPlace, on_delete=models.CASCADE, related_name='comment')
+    comment = models.TextField(blank=False, null=False)
+
+
+class CategoryEvent(models.Model):
+    categoryName = models.CharField(blank=False, null=False, max_length=40)
+
+
+class EventItem(models.Model):
+    eventItem = models.CharField(max_length=40)
+
+    def __str__(self):
+        return self.eventItem
+
+
+class Event(models.Model):
+    public_place = models.ForeignKey(PublicPlace, on_delete=models.CASCADE, related_name='event')
+    event_item = models.ForeignKey(EventItem, on_delete=models.CASCADE, null=True, blank=True)
+    name = models.CharField(blank=False, null=False, max_length=150)
+    description = models.TextField(blank=True, null=True)
+    schedule = models.DateTimeField('when_happens')
+
+
+class Movie(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='movie')
+    name_movie = models.CharField(blank=False, null=False, max_length=50)
+    name_movie_original = models.CharField(blank=False, null=True, max_length=50)
+    description = models.TextField(blank=False, null=False, max_length=50)
+    rating_imdb = models.CharField(blank=False, null=True, max_length=5)
+
+
+class Actor(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='actor')
+    actorName = models.CharField(blank=False, null=False, max_length=50)
+
+
+class ImageEvent(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='image_event')
+    image = models.ImageField(verbose_name='image_path')
+
