@@ -21,9 +21,17 @@ class CitySerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class ItemBaseSerializer(serializers.ModelSerializer):
+class LocationSerializer(serializers.ModelSerializer):
     class Meta:
-        model = ItemBase
+        model = Location
+        fields = '__all__'
+
+
+class PublicPlaceSerializer(serializers.ModelSerializer):
+    location = LocationSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = PublicPlace
         fields = '__all__'
 
 
@@ -41,6 +49,7 @@ class HolidayScheduleNestedSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'date', 'work_time_from', 'work_time_to', 'break_time_from', 'break_time_to'
         ]
+
 
 class WorkingScheduleSerializer(serializers.ModelSerializer):
     class Meta:

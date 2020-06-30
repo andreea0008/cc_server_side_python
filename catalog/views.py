@@ -20,9 +20,14 @@ class CityView(viewsets.ModelViewSet):
     serializer_class = CitySerializer
 
 
-class ItemBaseView(viewsets.ModelViewSet):
-    queryset = ItemBase.objects.all()
-    serializer_class = ItemBaseSerializer
+class PublicPlaceView(viewsets.ModelViewSet):
+    queryset = PublicPlace.objects.all()
+    serializer_class = PublicPlaceSerializer
+
+
+class LocationView(viewsets.ModelViewSet):
+    queryset = Location.objects.all()
+    serializer_class = LocationSerializer
 
 
 class CafeView(viewsets.ModelViewSet):

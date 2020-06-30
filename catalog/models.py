@@ -1,18 +1,12 @@
 from django.db import models
 
 
-class Category (models.Model):
-    name = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.name
-
-
 class Country (models.Model):
     country = models.CharField(max_length=50)
 
     def __str__(self):
         return self.country
+
 
 class City (models.Model):
     city = models.CharField(max_length=50)
@@ -21,17 +15,32 @@ class City (models.Model):
         return self.city
 
 
-class ItemBase(models.Model):
+class Category (models.Model):
+    name = models.CharField(max_length=50)
+
+    def __str__(self):
+        return self.name
+
+
+class PublicPlace(models.Model):
     name = models.CharField(max_length=49)
     country = models.ForeignKey(Country, on_delete=models.CASCADE, null=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
 
-    def __unicode__(self):
-        return '%s: %s, %s'(self.country, self.city.name, self.category)
+    def __str__(self):
+        namePublicPlace = '{0} {1}'.format(self.city, self.name)
+        return namePublicPlace
 
 
-class Cafe(models.Model) :
+class Location(models.Model):
+    publicPlace = models.ForeignKey(PublicPlace, on_delete=models.CASCADE, null=True)
+    address = models.TextField(max_length=50, null=True, blank=True)
+    lat = models.CharField(max_length=15, null=True, blank=True)
+    lng = models.CharField(max_length=15, null=True, blank=True)
+
+
+class Cafe(models.Model):
     name_company = models.CharField(max_length=49)
     country = models.ForeignKey(Country, on_delete=models.CASCADE, null=True, blank=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True)
@@ -108,7 +117,6 @@ class WorkingSchedule(models.Model):
         ('thursday', 'Thursday'),
         ('friday', 'Friday'),
         ('saturday', 'Saturday'),
-        
     )
 
     cafe = models.ForeignKey(Cafe, on_delete=models.CASCADE, related_name='working_days_schedule')
