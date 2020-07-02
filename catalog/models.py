@@ -22,6 +22,13 @@ class Category (models.Model):
         return self.name
 
 
+class Social(models.Model):
+    social_name = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.social_name
+
+
 class PublicPlace(models.Model):
     name = models.CharField(max_length=49)
     country = models.ForeignKey(Country, on_delete=models.CASCADE, null=True)
@@ -40,13 +47,13 @@ class Location(models.Model):
     lat = models.CharField(max_length=15, null=True, blank=True)
     lng = models.CharField(max_length=15, null=True, blank=True)
 
-    # def __str__(self):
-    #     result = '{0}'.format(self.address)
-    #     return result
+    def __str__(self):
+        result = '{0}'.format(self.address)
+        return result
 
 
 class PhoneContact(models.Model):
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="phones")
     phone = models.CharField(max_length=15, null=True, blank=True)
 
     # def __str__(self):
@@ -64,7 +71,7 @@ class WorkingSchedule(models.Model):
         ('saturday', 'Saturday'),
     )
 
-    cafe = models.ForeignKey(PublicPlace, on_delete=models.CASCADE, related_name='working_days_schedule')
+    public_place = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='working_days_schedule')
     day = models.CharField(max_length=9, choices=DAYS)
     work_time_from = models.TimeField()
     work_time_to = models.TimeField()
@@ -72,14 +79,24 @@ class WorkingSchedule(models.Model):
     break_time_to = models.TimeField(blank=True, null=True)
 
     class Meta:
-        unique_together = ('cafe', 'day')
+        unique_together = ('public_place', 'day')
 
 
 class HolidaySchedule(models.Model):
     """Is used to extra holidays such as: New Year, Christmas, etc."""
     date = models.DateField()
-    cafe = models.ForeignKey(PublicPlace, on_delete=models.CASCADE, related_name='holidays_schedule')
+    public_place = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='holidays_schedule')
     work_time_from = models.TimeField()
     work_time_to = models.TimeField()
     break_time_from = models.TimeField(blank=True, null=True)
-    break_time_to = models.TimeField(blank=True, null=True) 
+    break_time_to = models.TimeField(blank=True, null=True)
+
+
+class SocialInfo(models.Model):
+    SOCIAL_NETWORKS = [('facebook', 'Facebook'), ('instagram', "Instagram"), ('email', 'Email')]
+
+    public_place = models.ForeignKey(PublicPlace, on_delete=models.CASCADE, related_name='social_info')
+    name_social = models.CharField(max_length=20, blank=True, null=True, choices=SOCIAL_NETWORKS)
+    link = models.CharField(max_length=30, blank=True, null=True)
+
+    

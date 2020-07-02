@@ -20,6 +20,11 @@ class CityView(viewsets.ModelViewSet):
     serializer_class = CitySerializer
 
 
+class SocialView(viewsets.ModelViewSet):
+    queryset = Social.objects.all()
+    serializer_class = SocialSerializer
+
+
 class PublicPlaceView(viewsets.ModelViewSet):
     queryset = PublicPlace.objects.all()
     serializer_class = PublicPlaceSerializer
@@ -43,3 +48,8 @@ class WorkingScheduleView(viewsets.ModelViewSet):
 class HolidayScheduleView(viewsets.ModelViewSet):
     queryset = HolidaySchedule.objects.all()
     serializer_class = HolidayScheduleSerializer
+
+
+class SocialInfoView(viewsets.ModelViewSet):
+    queryset = SocialInfo.objects.all()
+    serializer_class = SocialInfoSerializer
