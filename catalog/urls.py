@@ -9,10 +9,9 @@ router.register('city', views.CityView)
 router.register('public_place', views.PublicPlaceView)
 router.register('location', views.LocationView)
 router.register('category', views.CategoryView)
-router.register('cafe', views.CafeView)
 router.register('working-schedule', views.WorkingScheduleView)
 router.register('holiday-schedule', views.HolidayScheduleView)
-
+router.register('phone_contacts', views.PhoneContactView)
 
 urlpatterns = [
     path('', include(router.urls)),

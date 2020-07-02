@@ -34,6 +34,10 @@ class HolidayScheduleAdmin(admin.ModelAdmin):
     pass
 
 
+class PhoneContactAdmin(admin.ModelAdmin):
+    pass
+
+
 admin.site.register(Country, CountryAdmin)
 admin.site.register(City, CityAdmin)
 admin.site.register(Category, CategoryAdmin)
@@ -41,3 +45,4 @@ admin.site.register(PublicPlace, PublicPlaceAdmin)
 admin.site.register(Location, LocationAdmin)
 admin.site.register(WorkingSchedule, WorkingScheduleAdmin)
 admin.site.register(HolidaySchedule, HolidayScheduleAdmin)
+admin.site.register(PhoneContact, PhoneContactAdmin)

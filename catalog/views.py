@@ -30,9 +30,9 @@ class LocationView(viewsets.ModelViewSet):
     serializer_class = LocationSerializer
 
 
-class CafeView(viewsets.ModelViewSet):
-    queryset = Cafe.objects.all()
-    serializer_class = CafeSerializer
+class PhoneContactView(viewsets.ModelViewSet):
+    queryset = PhoneContact.objects.all()
+    serializer_class = PhoneContactSerializer
 
 
 class WorkingScheduleView(viewsets.ModelViewSet):

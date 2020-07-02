@@ -15,20 +15,27 @@ class CountrySerializer(serializers.HyperlinkedModelSerializer):
 
 
 class CitySerializer(serializers.ModelSerializer):
-
     class Meta:
         model = City
-        fields = "__all__"
+        fields = '__all__'
+
+
+class PhoneContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PhoneContact
+        fields = '__all__'
 
 
 class LocationSerializer(serializers.ModelSerializer):
+    phone = PhoneContactSerializer(many=True, read_only=True)
+
     class Meta:
         model = Location
         fields = '__all__'
 
 
 class PublicPlaceSerializer(serializers.ModelSerializer):
-    location = LocationSerializer(many=True, read_only=True)
+    location = LocationSerializer(many=True, read_only=True, source='locations')
 
     class Meta:
         model = PublicPlace
@@ -63,10 +70,4 @@ class HolidayScheduleSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class CafeSerializer(serializers.ModelSerializer):
-    working_days_schedule = WorkingScheduleNestedSerializer(many=True, read_only=True)
-    holidays_schedule = HolidayScheduleNestedSerializer(many=True, read_only=True)
 
-    class Meta:
-        model = Cafe
-        fields = '__all__'
