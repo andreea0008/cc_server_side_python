@@ -55,6 +55,7 @@ class LocationSerializer(serializers.ModelSerializer):
 
 
 class SocialInfoSerializer(serializers.ModelSerializer):
+    public_place_name = serializers.ReadOnlyField()
 
     class Meta:
         model = SocialInfo
@@ -68,9 +69,3 @@ class PublicPlaceSerializer(serializers.ModelSerializer):
     class Meta:
         model = PublicPlace
         fields = '__all__'
-
-
-
-
-
-

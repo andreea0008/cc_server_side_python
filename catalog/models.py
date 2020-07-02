@@ -99,4 +99,10 @@ class SocialInfo(models.Model):
     name_social = models.CharField(max_length=20, blank=True, null=True, choices=SOCIAL_NETWORKS)
     link = models.CharField(max_length=30, blank=True, null=True)
 
-    
+    @property
+    def public_place_name(self):
+        return self.public_place.name
+
+    def __str__(self):
+        return '{0} {1}: {2}'.format(self.public_place.name, self.name_social, self.link)
+
