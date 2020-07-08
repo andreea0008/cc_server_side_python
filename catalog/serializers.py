@@ -29,7 +29,7 @@ class SocialSerializer(serializers.ModelSerializer):
 class PhoneContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = PhoneContact
-        fields = '__all__'
+        fields = ['phone']
 
 
 class HolidayScheduleSerializer(serializers.ModelSerializer):
@@ -59,7 +59,7 @@ class SocialInfoSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = SocialInfo
-        fields = '__all__'
+        fields = ['link', 'name_social', 'public_place_name']
 
 
 class PublicPlaceSerializer(serializers.ModelSerializer):

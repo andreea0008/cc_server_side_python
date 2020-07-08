@@ -56,8 +56,8 @@ class PhoneContact(models.Model):
     location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="phones")
     phone = models.CharField(max_length=15, null=True, blank=True)
 
-    # def __str__(self):
-    #     return '{0} {1}'.format(self.location.public_place.name, self.location.address)
+    def __str__(self):
+        return '{0} {1} [{2}]'.format(self.location.public_place.name, self.location.address, self.phone)
 
 
 class WorkingSchedule(models.Model):
@@ -71,7 +71,7 @@ class WorkingSchedule(models.Model):
         ('saturday', 'Saturday'),
     )
 
-    public_place = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='working_days_schedule')
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='working_days_schedule')
     day = models.CharField(max_length=9, choices=DAYS)
     work_time_from = models.TimeField()
     work_time_to = models.TimeField()
@@ -79,7 +79,14 @@ class WorkingSchedule(models.Model):
     break_time_to = models.TimeField(blank=True, null=True)
 
     class Meta:
-        unique_together = ('public_place', 'day')
+        unique_together = ('location', 'day')
+
+    @property
+    def public_place_name(self):
+        return self.public_place.name
+
+    def __str__(self):
+        return '{0} {1} {2}-{3}'.format(self.location.public_place.name, self.day, self.work_time_from, self.work_time_to)
 
 
 class HolidaySchedule(models.Model):
@@ -104,5 +111,5 @@ class SocialInfo(models.Model):
         return self.public_place.name
 
     def __str__(self):
-        return '{0} {1}: {2}'.format(self.public_place.name, self.name_social, self.link)
+        return '{0} \'{1}\': {2}'.format(self.public_place.name, self.name_social, self.link)
 

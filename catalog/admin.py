@@ -38,6 +38,10 @@ class HolidayScheduleAdmin(admin.ModelAdmin):
     pass
 
 
+class CallOperatorAdmin(admin.ModelAdmin):
+    pass
+
+
 class PhoneContactAdmin(admin.ModelAdmin):
     pass
 
