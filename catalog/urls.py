@@ -15,6 +15,10 @@ router.register('phone_contacts', views.PhoneContactView)
 router.register('socials', views.SocialView)
 router.register('social_info', views.SocialInfoView)
 router.register('event_type', views.EventTypeView)
+router.register('event', views.EventView)
+router.register('movie_event', views.MovieEventView)
+router.register('currency', views.CurrencyView)
+router.register('language_movie', views.LanguageMovieView)
 
 urlpatterns = [
     path('', include(router.urls)),

@@ -44,10 +44,55 @@ class WorkingScheduleSerializer(serializers.ModelSerializer):
         fields = ['day', 'work_time_from', 'work_time_to', 'break_time_from', 'break_time_to']
 
 
+class EventTypeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EventType
+        fields = ['type']
+
+
+class CurrencySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Currency
+        fields = ['currency_name']
+
+
+class EventSerializer(serializers.ModelSerializer):
+    event_type_name = serializers.ReadOnlyField()
+    location_address = serializers.ReadOnlyField()
+    location_lat = serializers.ReadOnlyField()
+    location_lng = serializers.ReadOnlyField()
+    lacation_inclusive = serializers.ReadOnlyField()
+    name_currency = serializers.ReadOnlyField()
+
+    class Meta:
+        model = Event
+        fields = '__all__'
+
+
+class LanguageMovieSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = LanguageMovie
+        fields = ['language']
+
+
+class MovieEventSerializer(serializers.ModelSerializer):
+    event_type_name = serializers.ReadOnlyField()
+    location_address = serializers.ReadOnlyField()
+    location_lat = serializers.ReadOnlyField()
+    location_lng = serializers.ReadOnlyField()
+    lacation_inclusive = serializers.ReadOnlyField()
+    name_currency = serializers.ReadOnlyField()
+
+    class Meta:
+        model = MovieEvent
+        fields = '__all__'
+
+
 class LocationSerializer(serializers.ModelSerializer):
     phone = PhoneContactSerializer(many=True, read_only=True, source='phones')
     holiday_schedule = HolidayScheduleSerializer(many=True, read_only=True, source='holidays_schedule')
     working_schedule = WorkingScheduleSerializer(many=True, read_only=True, source='working_days_schedule')
+    event = EventSerializer(many=True, read_only=True, source='event_location')
 
     class Meta:
         model = Location
@@ -68,14 +113,10 @@ class PublicPlaceSerializer(serializers.ModelSerializer):
     public_place_city = serializers.ReadOnlyField()
     public_place_country = serializers.ReadOnlyField()
     public_place_category = serializers.ReadOnlyField()
-    
+
     class Meta:
         model = PublicPlace
         fields = '__all__'
 
 
-class EventTypeSerializer(serializers.ModelSerializer):
 
-    class Meta:
-        model = EventType
-        fields = ['type']

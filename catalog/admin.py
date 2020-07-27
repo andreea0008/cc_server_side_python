@@ -51,6 +51,22 @@ class EventTypeAdmin(admin.ModelAdmin):
     pass
 
 
+class MovieEventAdmin(admin.ModelAdmin):
+    pass
+
+
+class CurrencyAdmin(admin.ModelAdmin):
+    pass
+
+
+class EventAdmin(admin.ModelAdmin):
+    pass
+
+
+class LanguageMovieAdmin(admin.ModelAdmin):
+    pass
+
+
 admin.site.site_header = 'Cicerone Admin Panel'
 
 admin.site.register(Country, CountryAdmin)
@@ -64,3 +80,7 @@ admin.site.register(HolidaySchedule, HolidayScheduleAdmin)
 admin.site.register(PhoneContact, PhoneContactAdmin)
 admin.site.register(SocialInfo, SocialInfoAdmin)
 admin.site.register(EventType, EventTypeAdmin)
+admin.site.register(Currency, CurrencyAdmin)
+admin.site.register(Event, EventAdmin)
+admin.site.register(MovieEvent, MovieEventAdmin)
+admin.site.register(LanguageMovie, LanguageMovieAdmin)

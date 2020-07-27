@@ -63,3 +63,23 @@ class SocialInfoView(viewsets.ModelViewSet):
 class EventTypeView(viewsets.ModelViewSet):
     queryset = EventType.objects.all()
     serializer_class = EventTypeSerializer
+
+
+class EventView(viewsets.ModelViewSet):
+    queryset = Event.objects.all()
+    serializer_class = EventSerializer
+
+
+class MovieEventView(viewsets.ModelViewSet):
+    queryset = MovieEvent.objects.all()
+    serializer_class = MovieEventSerializer
+
+
+class CurrencyView(viewsets.ModelViewSet):
+    queryset = Currency.objects.all()
+    serializer_class = CurrencySerializer
+
+
+class LanguageMovieView(viewsets.ModelViewSet):
+    queryset = LanguageMovie.objects.all()
+    serializer_class = LanguageMovieSerializer
