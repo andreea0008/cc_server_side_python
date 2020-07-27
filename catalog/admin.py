@@ -3,9 +3,6 @@ from django.contrib import admin
 from .models import *
 
 
-# Add simple admin to create testing object in easiest way.
-
-
 class CountryAdmin(admin.ModelAdmin):
     pass
 
@@ -23,7 +20,7 @@ class SocialAdmin(admin.ModelAdmin):
 
 
 class PublicPlaceAdmin(admin.ModelAdmin):
-    pass
+    list_display = ('name', 'public_place_city', 'public_place_category')
 
 
 class LocationAdmin(admin.ModelAdmin):
@@ -49,6 +46,8 @@ class PhoneContactAdmin(admin.ModelAdmin):
 class SocialInfoAdmin(admin.ModelAdmin):
     pass
 
+
+admin.site.site_header = 'Cicerone Admin Panel'
 
 admin.site.register(Country, CountryAdmin)
 admin.site.register(City, CityAdmin)

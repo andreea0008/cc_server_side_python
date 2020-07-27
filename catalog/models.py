@@ -35,6 +35,18 @@ class PublicPlace(models.Model):
     city = models.ForeignKey(City, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
 
+    @property
+    def public_place_city(self):
+        return self.city.city
+
+    @property
+    def public_place_country(self):
+        return self.country.country
+
+    @property
+    def public_place_category(self):
+        return self.category.name
+
     def __str__(self):
         namePublicPlace = '{0} {1}'.format(self.city, self.name)
         return namePublicPlace

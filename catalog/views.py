@@ -1,8 +1,9 @@
-from django.shortcuts import render
-from rest_framework import viewsets
-from .models import *
+import django_filters
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import viewsets, generics
+from rest_framework.generics import ListAPIView
+
 from .serializers import *
-from rest_framework import views
 
 
 class CategoryView(viewsets.ModelViewSet):
@@ -28,11 +29,15 @@ class SocialView(viewsets.ModelViewSet):
 class PublicPlaceView(viewsets.ModelViewSet):
     queryset = PublicPlace.objects.all()
     serializer_class = PublicPlaceSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = ('city', 'country',)
 
 
 class LocationView(viewsets.ModelViewSet):
     queryset = Location.objects.all()
     serializer_class = LocationSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = ('public_place', 'inclusive')
 
 
 class PhoneContactView(viewsets.ModelViewSet):

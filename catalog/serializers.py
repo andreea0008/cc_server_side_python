@@ -65,7 +65,10 @@ class SocialInfoSerializer(serializers.ModelSerializer):
 class PublicPlaceSerializer(serializers.ModelSerializer):
     location = LocationSerializer(many=True, read_only=True, source='locations')
     social_info = SocialInfoSerializer(many=True, read_only=True)
-
+    public_place_city = serializers.ReadOnlyField()
+    public_place_country = serializers.ReadOnlyField()
+    public_place_category = serializers.ReadOnlyField()
+    
     class Meta:
         model = PublicPlace
         fields = '__all__'
