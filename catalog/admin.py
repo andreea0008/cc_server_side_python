@@ -3,9 +3,27 @@ from django.contrib import admin
 from .models import *
 
 
-# Add simple admin to create testing object in easiest way.
+class CountryAdmin(admin.ModelAdmin):
+    pass
+
+
+class CityAdmin(admin.ModelAdmin):
+    pass
+
+
+class CategoryAdmin(admin.ModelAdmin):
+    pass
+
+
+class SocialAdmin(admin.ModelAdmin):
+    pass
+
 
 class PublicPlaceAdmin(admin.ModelAdmin):
+    list_display = ('name', 'public_place_city', 'public_place_category')
+
+
+class LocationAdmin(admin.ModelAdmin):
     pass
 
 
@@ -17,56 +35,27 @@ class HolidayScheduleAdmin(admin.ModelAdmin):
     pass
 
 
-class SocialAdmin(admin.ModelAdmin):
+class CallOperatorAdmin(admin.ModelAdmin):
     pass
 
 
-class PhoneAdmin(admin.ModelAdmin):
+class PhoneContactAdmin(admin.ModelAdmin):
     pass
 
 
-class LocationAdmin(admin.ModelAdmin):
+class SocialInfoAdmin(admin.ModelAdmin):
     pass
 
 
-class CommentsAdmin(admin.ModelAdmin):
-    pass
+admin.site.site_header = 'Cicerone Admin Panel'
 
-
-class CategoryEventAdmin(admin.ModelAdmin):
-    pass
-
-
-class ActorAdmin(admin.ModelAdmin):
-    pass
-
-
-class MovieAdmin(admin.ModelAdmin):
-    pass
-
-
-class EventAdmin(admin.ModelAdmin):
-    pass
-
-
-class EventItemAdmin(admin.ModelAdmin):
-    pass
-
-
-class ImageEventAdmin(admin.ModelAdmin):
-    pass
-
-
+admin.site.register(Country, CountryAdmin)
+admin.site.register(City, CityAdmin)
+admin.site.register(Category, CategoryAdmin)
+admin.site.register(Social, SocialAdmin)
 admin.site.register(PublicPlace, PublicPlaceAdmin)
+admin.site.register(Location, LocationAdmin)
 admin.site.register(WorkingSchedule, WorkingScheduleAdmin)
 admin.site.register(HolidaySchedule, HolidayScheduleAdmin)
-admin.site.register(Social, SocialAdmin)
-admin.site.register(Phones, PhoneAdmin)
-admin.site.register(Location, LocationAdmin)
-admin.site.register(Comment, CommentsAdmin)
-admin.site.register(CategoryEvent, CategoryEventAdmin)
-admin.site.register(Actor, ActorAdmin)
-admin.site.register(Movie, MovieAdmin)
-admin.site.register(Event, EventAdmin)
-admin.site.register(EventItem, EventItemAdmin)
-admin.site.register(ImageEvent, ImageEventAdmin)
+admin.site.register(PhoneContact, PhoneContactAdmin)
+admin.site.register(SocialInfo, SocialInfoAdmin)

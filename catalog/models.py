@@ -2,38 +2,75 @@ from django.db import models
 from django.db.models import CharField
 
 
-class Category(models.Model):
-    name = models.CharField(max_length=50)
-
-    def __str__(self):
-        return self.name
-
-
-class Country(models.Model):
+class Country (models.Model):
     country = models.CharField(max_length=50)
 
     def __str__(self):
         return self.country
 
 
-class City(models.Model):
+class City (models.Model):
     city = models.CharField(max_length=50)
 
     def __str__(self):
         return self.city
 
 
-class PublicPlace(models.Model):
-    name_company = models.CharField(max_length=49)
-    country = models.ForeignKey(Country, on_delete=models.CASCADE, null=True, blank=True)
-    city = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True)
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
-
-    # TODO chek it: A good rule of thumb is that you use CharField when you need to limit the maximum length, TextField otherwise.
-    # from https://stackoverflow.com/questions/7354588/django-charfield-vs-textfield
+class Category (models.Model):
+    name = models.CharField(max_length=50)
 
     def __str__(self):
-        return self.name_company
+        return self.name
+
+
+class Social(models.Model):
+    social_name = models.CharField(max_length=20)
+
+    def __str__(self):
+        return self.social_name
+
+
+class PublicPlace(models.Model):
+    name = models.CharField(max_length=49)
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, null=True)
+    city = models.ForeignKey(City, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+
+    @property
+    def public_place_city(self):
+        return self.city.city
+
+    @property
+    def public_place_country(self):
+        return self.country.country
+
+    @property
+    def public_place_category(self):
+        return self.category.name
+
+    def __str__(self):
+        namePublicPlace = '{0} {1}'.format(self.city, self.name)
+        return namePublicPlace
+
+
+class Location(models.Model):
+    public_place = models.ForeignKey(PublicPlace, on_delete=models.CASCADE, related_name="locations")
+    address = models.TextField(max_length=50, null=True, blank=True)
+    inclusive = models.BooleanField(default=False)
+    lat = models.CharField(max_length=15, null=True, blank=True)
+    lng = models.CharField(max_length=15, null=True, blank=True)
+
+    def __str__(self):
+        result = '{0}'.format(self.address)
+        return result
+
+
+class PhoneContact(models.Model):
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name="phones")
+    phone = models.CharField(max_length=15, null=True, blank=True)
+
+    def __str__(self):
+        return '{0} {1} [{2}]'.format(self.location.public_place.name, self.location.address, self.phone)
 
 
 class WorkingSchedule(models.Model):
@@ -47,7 +84,7 @@ class WorkingSchedule(models.Model):
         ('saturday', 'Saturday'),
     )
 
-    public_place = models.ForeignKey(PublicPlace, on_delete=models.CASCADE, related_name='working_days_schedule')
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='working_days_schedule')
     day = models.CharField(max_length=9, choices=DAYS)
     work_time_from = models.TimeField()
     work_time_to = models.TimeField()
@@ -55,84 +92,37 @@ class WorkingSchedule(models.Model):
     break_time_to = models.TimeField(blank=True, null=True)
 
     class Meta:
-        unique_together = (('public_place', 'day'))
+        unique_together = ('location', 'day')
+
+    @property
+    def public_place_name(self):
+        return self.public_place.name
+
+    def __str__(self):
+        return '{0} {1} {2}-{3}'.format(self.location.public_place.name, self.day, self.work_time_from, self.work_time_to)
 
 
 class HolidaySchedule(models.Model):
     """Is used to extra holidays such as: New Year, Christmas, etc."""
     date = models.DateField()
-    public_place = models.ForeignKey(PublicPlace, on_delete=models.CASCADE, related_name='holidays_schedule')
+    public_place = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='holidays_schedule')
     work_time_from = models.TimeField()
     work_time_to = models.TimeField()
     break_time_from = models.TimeField(blank=True, null=True)
     break_time_to = models.TimeField(blank=True, null=True)
 
 
-# Social Class
-class Social(models.Model):
-    """It is for social component"""
+class SocialInfo(models.Model):
     SOCIAL_NETWORKS = [('facebook', 'Facebook'), ('instagram', "Instagram"), ('email', 'Email')]
 
-    social_place = models.ForeignKey(PublicPlace, on_delete=models.CASCADE, related_name='social')
-    name_social_network = models.CharField(blank=True, null=True, choices=SOCIAL_NETWORKS, max_length=20)
-    link_social_network = models.TextField(blank=True, null=True)
+    public_place = models.ForeignKey(PublicPlace, on_delete=models.CASCADE, related_name='social_info')
+    name_social = models.CharField(max_length=20, blank=True, null=True, choices=SOCIAL_NETWORKS)
+    link = models.CharField(max_length=30, blank=True, null=True)
 
-
-class Phones(models.Model):
-    """It's for phone component"""
-    OPERATORS = [('kyivstar', "Kyivstar"), ("vodaphone", "Vodaphone")]
-
-    social_place = models.ForeignKey(PublicPlace, on_delete=models.CASCADE, related_name='phones')
-    operatorPhone = models.CharField(blank=True, null=True, choices=OPERATORS, max_length=20)
-    phone = models.CharField(blank=True, null=True, max_length=20)
-
-
-class Location(models.Model):
-    """It's for address or location public place component"""
-    public_place = models.ForeignKey(PublicPlace, on_delete=models.CASCADE, related_name="locations")
-    address_location = models.TextField(blank=True, null=True)
-    lat = models.TextField(blank=True, null=True, max_length=15)
-    lng = models.TextField(blank=True, null=True, max_length=15)
-
-
-class Comment(models.Model):
-    public_place = models.ForeignKey(PublicPlace, on_delete=models.CASCADE, related_name='comment')
-    comment = models.TextField(blank=False, null=False)
-
-
-class CategoryEvent(models.Model):
-    categoryName = models.CharField(blank=False, null=False, max_length=40)
-
-
-class EventItem(models.Model):
-    eventItem = models.CharField(max_length=40)
+    @property
+    def public_place_name(self):
+        return self.public_place.name
 
     def __str__(self):
-        return self.eventItem
-
-
-class Event(models.Model):
-    public_place = models.ForeignKey(PublicPlace, on_delete=models.CASCADE, related_name='event')
-    event_item = models.ForeignKey(EventItem, on_delete=models.CASCADE, null=True, blank=True)
-    name = models.CharField(blank=False, null=False, max_length=150)
-    description = models.TextField(blank=True, null=True)
-    schedule = models.DateTimeField('when_happens')
-
-
-class Movie(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='movie')
-    name_movie = models.CharField(blank=False, null=False, max_length=50)
-    name_movie_original = models.CharField(blank=False, null=True, max_length=50)
-    description = models.TextField(blank=False, null=False, max_length=50)
-    rating_imdb = models.CharField(blank=False, null=True, max_length=5)
-
-
-class Actor(models.Model):
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='actor')
-    actorName = models.CharField(blank=False, null=False, max_length=50)
-
-
-class ImageEvent(models.Model):
-    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='image_event')
-    image = models.ImageField(verbose_name='image_path')
+        return '{0} \'{1}\': {2}'.format(self.public_place.name, self.name_social, self.link)
 

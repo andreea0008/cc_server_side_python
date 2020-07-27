@@ -1,8 +1,9 @@
-from django.shortcuts import render
-from rest_framework import viewsets
-from .models import *
+import django_filters
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import viewsets, generics
+from rest_framework.generics import ListAPIView
+
 from .serializers import *
-from rest_framework import views
 
 
 class CategoryView(viewsets.ModelViewSet):
@@ -20,9 +21,28 @@ class CityView(viewsets.ModelViewSet):
     serializer_class = CitySerializer
 
 
+class SocialView(viewsets.ModelViewSet):
+    queryset = Social.objects.all()
+    serializer_class = SocialSerializer
+
+
 class PublicPlaceView(viewsets.ModelViewSet):
     queryset = PublicPlace.objects.all()
     serializer_class = PublicPlaceSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = ('city', 'country',)
+
+
+class LocationView(viewsets.ModelViewSet):
+    queryset = Location.objects.all()
+    serializer_class = LocationSerializer
+    filter_backends = (DjangoFilterBackend,)
+    filter_fields = ('public_place', 'inclusive')
+
+
+class PhoneContactView(viewsets.ModelViewSet):
+    queryset = PhoneContact.objects.all()
+    serializer_class = PhoneContactSerializer
 
 
 class WorkingScheduleView(viewsets.ModelViewSet):
@@ -35,51 +55,6 @@ class HolidayScheduleView(viewsets.ModelViewSet):
     serializer_class = HolidayScheduleSerializer
 
 
-class LocationView(viewsets.ModelViewSet):
-    queryset = Location.objects.all()
-    serializer_class = LocationsSerializer
-
-
-class SocialNetworkView(viewsets.ModelViewSet):
-    queryset = Social.objects.all()
-    serializer_class = SocialSerializer
-
-
-class PhonesView(viewsets.ModelViewSet):
-    queryset = Phones.objects.all()
-    serializer_class = PhonesSerializer
-
-
-class CommentsView(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
-    serializer_class = CommentsSerializer
-
-
-class CategoryEventView(viewsets.ModelViewSet):
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-
-
-class ActorView(viewsets.ModelViewSet):
-    queryset = Actor.objects.all()
-    serializer_class = ActorSerializer
-
-
-class MovieView(viewsets.ModelViewSet):
-    queryset = Movie.objects.all()
-    serializer_class = MovieSerializer
-
-
-class EventView(viewsets.ModelViewSet):
-    queryset = Event.objects.all()
-    serializer_class = EventSerializer
-
-
-class ImageEventView(viewsets.ModelViewSet):
-    queryset = ImageEvent.objects.all()
-    serializer_class = ImageEventSerializer
-
-
-class EventItemView(viewsets.ModelViewSet):
-    queryset = EventItem.objects.all()
-    serializer_class = EventItemSerializer
+class SocialInfoView(viewsets.ModelViewSet):
+    queryset = SocialInfo.objects.all()
+    serializer_class = SocialInfoSerializer
