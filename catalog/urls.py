@@ -14,6 +14,7 @@ router.register('holiday-schedule', views.HolidayScheduleView)
 router.register('phone_contacts', views.PhoneContactView)
 router.register('socials', views.SocialView)
 router.register('social_info', views.SocialInfoView)
+router.register('event_type', views.EventTypeView)
 
 urlpatterns = [
     path('', include(router.urls)),

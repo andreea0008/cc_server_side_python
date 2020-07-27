@@ -47,6 +47,10 @@ class SocialInfoAdmin(admin.ModelAdmin):
     pass
 
 
+class EventTypeAdmin(admin.ModelAdmin):
+    pass
+
+
 admin.site.site_header = 'Cicerone Admin Panel'
 
 admin.site.register(Country, CountryAdmin)
@@ -59,3 +63,4 @@ admin.site.register(WorkingSchedule, WorkingScheduleAdmin)
 admin.site.register(HolidaySchedule, HolidayScheduleAdmin)
 admin.site.register(PhoneContact, PhoneContactAdmin)
 admin.site.register(SocialInfo, SocialInfoAdmin)
+admin.site.register(EventType, EventTypeAdmin)

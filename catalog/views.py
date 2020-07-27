@@ -58,3 +58,8 @@ class HolidayScheduleView(viewsets.ModelViewSet):
 class SocialInfoView(viewsets.ModelViewSet):
     queryset = SocialInfo.objects.all()
     serializer_class = SocialInfoSerializer
+
+
+class EventTypeView(viewsets.ModelViewSet):
+    queryset = EventType.objects.all()
+    serializer_class = EventTypeSerializer

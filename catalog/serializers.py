@@ -72,3 +72,10 @@ class PublicPlaceSerializer(serializers.ModelSerializer):
     class Meta:
         model = PublicPlace
         fields = '__all__'
+
+
+class EventTypeSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = EventType
+        fields = ['type']
