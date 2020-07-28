@@ -83,3 +83,8 @@ class CurrencyView(viewsets.ModelViewSet):
 class LanguageMovieView(viewsets.ModelViewSet):
     queryset = LanguageMovie.objects.all()
     serializer_class = LanguageMovieSerializer
+
+
+class ImageEventView(viewsets.ModelViewSet):
+    queryset = ImageEvent.objects.all()
+    serializer_class = ImageEventSerializer

@@ -67,6 +67,10 @@ class LanguageMovieAdmin(admin.ModelAdmin):
     pass
 
 
+class ImageAdmin(admin.ModelAdmin):
+    pass
+
+
 admin.site.site_header = 'Cicerone Admin Panel'
 
 admin.site.register(Country, CountryAdmin)
@@ -84,3 +88,4 @@ admin.site.register(Currency, CurrencyAdmin)
 admin.site.register(Event, EventAdmin)
 admin.site.register(MovieEvent, MovieEventAdmin)
 admin.site.register(LanguageMovie, LanguageMovieAdmin)
+admin.site.register(ImageEvent, ImageAdmin)
