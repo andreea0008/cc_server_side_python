@@ -87,8 +87,16 @@ class MovieSessionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class CinemaSerializer(serializers.ModelSerializer):
+    movie_session = MovieSessionSerializer(many=True, read_only=True, source='cinema')
+
+    class Meta:
+        model = Cinema
+        fields = '__all__'
+
+
 class MovieEventSerializer(serializers.ModelSerializer):
-    movie_session = MovieSessionSerializer(many=True, read_only=True, source='movie_name')
+    cinema = CinemaSerializer(many=True, read_only=True, source='movie_name')
     event_type_name = serializers.ReadOnlyField()
     location_address = serializers.ReadOnlyField()
     location_lat = serializers.ReadOnlyField()

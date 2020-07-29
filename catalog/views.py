@@ -93,3 +93,8 @@ class ImageEventView(viewsets.ModelViewSet):
 class MovieSessionView(viewsets.ModelViewSet):
     queryset = MovieSession.objects.all()
     serializer_class = MovieSessionSerializer
+
+
+class CinemaView(viewsets.ModelViewSet):
+    queryset = Cinema.objects.all()
+    serializer_class = CinemaSerializer

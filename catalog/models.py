@@ -189,11 +189,14 @@ class Event(models.Model):
     def name_currency(self):
         return self.currency.currency_name
 
+
 class LanguageMovie(models.Model):
     language = models.CharField(max_length=40, null=True, blank=True)
 
     def __str__(self):
         return self.language
+
+
 class MovieEvent(Event):
     TECHNOLOGIES = [('2d', '2D'), ('IMAX', "Imax"), ('3d', '3D'), ('dbox', 'DBOX'), ('4dx', '4DX')]
 
@@ -242,10 +245,13 @@ class MovieEvent(Event):
         return self.language.language
 
 
-class MovieSession(models.Model):
+class Cinema(models.Model):
     movie_name = models.ForeignKey(MovieEvent, on_delete=models.CASCADE, related_name='movie_name')
+    cinema_name = models.CharField(max_length=30, null=True, blank=True)
+
+
+class MovieSession(models.Model):
+    cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE, related_name='cinema')
     date = models.DateTimeField(null=True, blank=True)
     ticket_link = models.TextField(null=True, blank=True)
 
-    # def __str__(self):
-    #     return '{0}'.format(self.date)
