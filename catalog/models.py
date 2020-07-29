@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import CharField
+import PIL
 
 
 class Country(models.Model):
@@ -142,6 +143,14 @@ class Currency(models.Model):
         return self.currency_name
 
 
+class ImageEvent(models.Model):
+    image = models.ImageField(verbose_name='Image of event', null=True, blank=True)
+    name_event = models.CharField(max_length=30, blank=True, null=True)
+
+    def __str__(self):
+        return self.name_event
+
+
 class Event(models.Model):
     type_event = models.ForeignKey(EventType, on_delete=models.CASCADE, related_name='event')
     location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='event_location')
@@ -180,15 +189,16 @@ class Event(models.Model):
     def name_currency(self):
         return self.currency.currency_name
 
-
 class LanguageMovie(models.Model):
-    language = models.TextField(max_length=40, null=True, blank=True)
+    language = models.CharField(max_length=40, null=True, blank=True)
 
     def __str__(self):
         return self.language
-
-
 class MovieEvent(Event):
+    TECHNOLOGIES = [('2d', '2D'), ('IMAX', "Imax"), ('3d', '3D'), ('dbox', 'DBOX'), ('4dx', '4DX')]
+
+    technologies = models.CharField(max_length=20, blank=True, null=True, choices=TECHNOLOGIES)
+
     language = models.ForeignKey(LanguageMovie, on_delete=models.CASCADE)
     original_name = models.CharField(max_length=50, null=True, blank=True)
     duration_movie = models.TimeField(verbose_name='Duration movie', null=True, blank=True)
@@ -198,6 +208,7 @@ class MovieEvent(Event):
     actors = models.TextField(blank=True, null=True)
     director = models.CharField(max_length=60, null=True, blank=True)
     min_age_limit = models.PositiveSmallIntegerField(null=True, blank=True)
+    countries = models.TextField(verbose_name="Countries", null=True, blank=True)
 
     def __str__(self):
         return '{0}'.format(self.original_name)
@@ -225,6 +236,10 @@ class MovieEvent(Event):
     @property
     def name_currency(self):
         return self.currency.currency_name
+
+    @property
+    def language_movie(self):
+        return self.language.language
 
 
 class MovieSession(models.Model):

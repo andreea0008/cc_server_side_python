@@ -85,6 +85,11 @@ class LanguageMovieView(viewsets.ModelViewSet):
     serializer_class = LanguageMovieSerializer
 
 
+class ImageEventView(viewsets.ModelViewSet):
+    queryset = ImageEvent.objects.all()
+    serializer_class = ImageEventSerializer
+
+
 class MovieSessionView(viewsets.ModelViewSet):
     queryset = MovieSession.objects.all()
     serializer_class = MovieSessionSerializer

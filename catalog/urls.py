@@ -20,6 +20,7 @@ router.register('movie_event', views.MovieEventView)
 router.register('currency', views.CurrencyView)
 router.register('language_movie', views.LanguageMovieView)
 router.register('movie_session', views.MovieSessionView)
+router.register('image_event', views.ImageEventView)
 
 urlpatterns = [
     path('', include(router.urls)),

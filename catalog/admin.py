@@ -67,6 +67,10 @@ class LanguageMovieAdmin(admin.ModelAdmin):
     pass
 
 
+class ImageAdmin(admin.ModelAdmin):
+    pass
+
+
 class MovieSessionAdmin(admin.ModelAdmin):
     pass
 
@@ -88,4 +92,6 @@ admin.site.register(Currency, CurrencyAdmin)
 admin.site.register(Event, EventAdmin)
 admin.site.register(MovieEvent, MovieEventAdmin)
 admin.site.register(LanguageMovie, LanguageMovieAdmin)
+admin.site.register(ImageEvent, ImageAdmin)
+
 admin.site.register(MovieSession, MovieSessionAdmin)

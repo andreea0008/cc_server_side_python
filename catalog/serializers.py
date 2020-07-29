@@ -56,6 +56,12 @@ class CurrencySerializer(serializers.ModelSerializer):
         fields = ['currency_name']
 
 
+class ImageEventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImageEvent
+        fields = ['image', 'name_event']
+
+
 class EventSerializer(serializers.ModelSerializer):
     event_type_name = serializers.ReadOnlyField()
     location_address = serializers.ReadOnlyField()
@@ -89,6 +95,7 @@ class MovieEventSerializer(serializers.ModelSerializer):
     location_lng = serializers.ReadOnlyField()
     lacation_inclusive = serializers.ReadOnlyField()
     name_currency = serializers.ReadOnlyField()
+    language_movie = serializers.ReadOnlyField()
 
     class Meta:
         model = MovieEvent
