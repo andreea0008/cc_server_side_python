@@ -199,7 +199,6 @@ class MovieEvent(Event):
     director = models.CharField(max_length=60, null=True, blank=True)
     min_age_limit = models.PositiveSmallIntegerField(null=True, blank=True)
 
-
     def __str__(self):
         return '{0}'.format(self.original_name)
 
@@ -226,3 +225,12 @@ class MovieEvent(Event):
     @property
     def name_currency(self):
         return self.currency.currency_name
+
+
+class MovieSession(models.Model):
+    movie_name = models.ForeignKey(MovieEvent, on_delete=models.CASCADE, related_name='movie_name')
+    date = models.DateTimeField(null=True, blank=True)
+    ticket_link = models.TextField(null=True, blank=True)
+
+    # def __str__(self):
+    #     return '{0}'.format(self.date)
