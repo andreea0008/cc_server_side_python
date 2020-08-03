@@ -202,7 +202,6 @@ class MovieEvent(Event):
 
     technologies = models.CharField(max_length=20, blank=True, null=True, choices=TECHNOLOGIES)
 
-    language = models.ForeignKey(LanguageMovie, on_delete=models.CASCADE)
     original_name = models.CharField(max_length=50, null=True, blank=True)
     duration_movie = models.TimeField(verbose_name='Duration movie', null=True, blank=True)
     IMDB_rating = models.FloatField('IMDB', null=True, blank=True)
@@ -251,7 +250,22 @@ class Cinema(models.Model):
 
 
 class MovieSession(models.Model):
+    TECHNOLOGIES = [('2d', '2D'), ('IMAX', "Imax"), ('3d', '3D'), ('dbox', 'DBOX'), ('4dx', '4DX')]
+
+    technologies = models.CharField(max_length=20, blank=True, null=True, choices=TECHNOLOGIES)
     cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE, related_name='cinema')
+    public_place = models.ForeignKey(PublicPlace, on_delete=models.CASCADE, related_name='movie_session')
     date = models.DateTimeField(null=True, blank=True)
     ticket_link = models.TextField(null=True, blank=True)
+    language = models.ForeignKey(LanguageMovie, on_delete=models.CASCADE)
+    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, related_name='movie_currency')
+    cost_event = models.CharField(max_length=10, blank=True, null=True)
+
+    @property
+    def currency_name(self):
+        return self.currency.currency_name
+
+    def __str__(self):
+        return '{0} |      {1}     |      [{2} | {3}]'.format(self.cinema.cinema_name, self.public_place.name,
+                                              self.technologies, self.date)
 

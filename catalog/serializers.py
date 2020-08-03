@@ -82,6 +82,8 @@ class LanguageMovieSerializer(serializers.ModelSerializer):
 
 
 class MovieSessionSerializer(serializers.ModelSerializer):
+    currency_name = serializers.ReadOnlyField()
+
     class Meta:
         model = MovieSession
         fields = '__all__'
@@ -89,6 +91,7 @@ class MovieSessionSerializer(serializers.ModelSerializer):
 
 class CinemaSerializer(serializers.ModelSerializer):
     movie_session = MovieSessionSerializer(many=True, read_only=True, source='cinema')
+    language_movie = serializers.ReadOnlyField()
 
     class Meta:
         model = Cinema
@@ -103,7 +106,6 @@ class MovieEventSerializer(serializers.ModelSerializer):
     location_lng = serializers.ReadOnlyField()
     lacation_inclusive = serializers.ReadOnlyField()
     name_currency = serializers.ReadOnlyField()
-    language_movie = serializers.ReadOnlyField()
 
     class Meta:
         model = MovieEvent
@@ -132,6 +134,7 @@ class SocialInfoSerializer(serializers.ModelSerializer):
 class PublicPlaceSerializer(serializers.ModelSerializer):
     location = LocationSerializer(many=True, read_only=True, source='locations')
     social_info = SocialInfoSerializer(many=True, read_only=True)
+    movie_sessions = MovieSessionSerializer(many=True, read_only=True, source='movie_session')
     public_place_city = serializers.ReadOnlyField()
     public_place_country = serializers.ReadOnlyField()
     public_place_category = serializers.ReadOnlyField()
