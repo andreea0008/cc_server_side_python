@@ -29,8 +29,9 @@ def convert_to_eng_name_day(name_day):
 
 
 data = []
-for x in range(9):
-    with open('C:/Users/user1/Desktop/responses/response{}.html'.format(x+1), 'r', encoding='utf-8') as content_file:
+for x in range(1):
+    with open('C:/Users/andre/Downloads/response2.html', 'r', encoding='utf-8') as content_file:
+
         content = content_file.read()
         soup = BeautifulSoup(content, 'lxml')
 
@@ -45,7 +46,7 @@ for x in range(9):
 
             # response = requests.get('https://list.in.ua/%D0%A2%D0%9E%D0%92/44979/23-%D1%80%D0%B5%D1%81%D1%82%D0%BE%D1%80%D0%B0%D0%BD%D0%B8-%D0%86%D0%B2%D0%B0%D0%BD%D0%BE-%D0%A4%D1%80%D0%B0%D0%BD%D0%BA%D1%96%D0%B2%D1%81%D1%8C%D0%BA')
             business_content = BeautifulSoup(response.content, 'lxml')
-            print(response.url)
+            # print(response.url)
 
             # NAME BUSINESS
             name_business = ''
@@ -161,6 +162,7 @@ for x in range(9):
 my_json = json.dumps(data, ensure_ascii=False)
 file = codecs.open("parsed_file", "a", "utf-8")
 file.write(my_json)
+# print(my_json)
 file.close()
 
 # coord

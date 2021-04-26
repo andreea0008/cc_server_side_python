@@ -152,6 +152,8 @@ class ImageEvent(models.Model):
 
 
 class Event(models.Model):
+    TYPE_MEETINGS = [('Online', 'online'), ('Offline', "offline")]
+    type_of_meeting = models.CharField(max_length=20, blank=True, null=True, choices=TYPE_MEETINGS)
     type_event = models.ForeignKey(EventType, on_delete=models.CASCADE, related_name='event')
     location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='event_location')
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE, related_name='currency')
@@ -161,6 +163,7 @@ class Event(models.Model):
     start_data_event = models.DateTimeField(verbose_name='Start event')
     finish_data_event = models.DateTimeField(verbose_name='Finish event', null=True, blank=True)
     single_event = models.BooleanField(verbose_name='Single event', null=True, blank=True, default=True)
+    poster_event = models.ImageField(upload_to='catalog/images/events')
 
     def __str__(self):
         return '{0} {1}'.format(self.type_event, self.title_event)

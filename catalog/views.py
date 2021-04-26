@@ -1,7 +1,11 @@
+from datetime import datetime, timedelta
+
 import django_filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics
+from rest_framework.filters import SearchFilter
 from rest_framework.generics import ListAPIView
+from rest_framework.response import Response
 
 from .serializers import *
 
@@ -30,7 +34,7 @@ class PublicPlaceView(viewsets.ModelViewSet):
     queryset = PublicPlace.objects.all()
     serializer_class = PublicPlaceSerializer
     filter_backends = (DjangoFilterBackend,)
-    filter_fields = ('city', 'country',)
+    filter_fields = ('city', 'country', 'public_place_country')
 
 
 class LocationView(viewsets.ModelViewSet):
@@ -66,8 +70,25 @@ class EventTypeView(viewsets.ModelViewSet):
 
 
 class EventView(viewsets.ModelViewSet):
-    queryset = Event.objects.all()
+    queryset = Event.objects.all().filter()
     serializer_class = EventSerializer
+    filter_backends = [DjangoFilterBackend, SearchFilter]
+    filterset_fields = ['location', 'type_event']
+    search_fields = ['title_event', 'description_event', 'description_event']
+
+    def get_queryset(self):
+        queryset = Event.objects.all().filter()
+        startdate = datetime.today()
+        start_data_event_query_params = self.request.query_params.get('start_data_event')
+        print(start_data_event_query_params)
+        if start_data_event_query_params is not None:
+            startdate = datetime.strptime(start_data_event_query_params, "%Y-%m-%dT%H:%M:%SZ")
+
+        enddate = startdate + timedelta(days=365)
+        print(startdate, enddate)
+        queryset = Event.objects.filter(start_data_event__range=[startdate, enddate])
+
+        return queryset
 
 
 class MovieEventView(viewsets.ModelViewSet):
