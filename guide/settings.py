@@ -132,7 +132,7 @@ else:
     # TODO maybe remove it. 
     perm = 'rest_framework.permissions.AllowAny'
 
-STATIC_ROOT = os.path(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 # Activate Django-Heroku.
 django_heroku.settings(locals())
