@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -27,6 +28,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
 
 # Application definition
 
@@ -38,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'django_filters',
     'catalog'
 ]
 
@@ -117,7 +120,7 @@ USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -129,6 +132,11 @@ else:
     # TODO maybe remove it. 
     perm = 'rest_framework.permissions.AllowAny'
 
+STATIC_ROOT = os.path(BASE_DIR, 'static')
+
+# Activate Django-Heroku.
+django_heroku.settings(locals())
+
 REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         perm
@@ -138,7 +146,8 @@ REST_FRAMEWORK = {
     ],
     'DEFAULT_PARSER_CLASSES': [
         'rest_framework.parsers.JSONParser',
-    ]
+    ],
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 try:
