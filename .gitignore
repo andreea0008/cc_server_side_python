@@ -10,5 +10,5 @@
 settings_local.py
 local_settings.py
 
-catalog/migrations/
+
 venv/
