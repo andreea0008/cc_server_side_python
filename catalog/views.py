@@ -34,7 +34,7 @@ class PublicPlaceView(viewsets.ModelViewSet):
     queryset = PublicPlace.objects.all()
     serializer_class = PublicPlaceSerializer
     filter_backends = (DjangoFilterBackend,)
-    filter_fields = ('city', 'country', 'public_place_country')
+    filter_fields = ('city', 'country')
 
 
 class LocationView(viewsets.ModelViewSet):
