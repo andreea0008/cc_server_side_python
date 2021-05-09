@@ -143,14 +143,6 @@ class Currency(models.Model):
         return self.currency_name
 
 
-class ImageEvent(models.Model):
-    image = models.ImageField(verbose_name='Image of event', null=True, blank=True)
-    name_event = models.CharField(max_length=30, blank=True, null=True)
-
-    def __str__(self):
-        return self.name_event
-
-
 class Event(models.Model):
     TYPE_MEETINGS = [('Online', 'online'), ('Offline', "offline")]
     type_of_meeting = models.CharField(max_length=20, blank=True, null=True, choices=TYPE_MEETINGS)
@@ -163,7 +155,7 @@ class Event(models.Model):
     start_data_event = models.DateTimeField(verbose_name='Start event')
     finish_data_event = models.DateTimeField(verbose_name='Finish event', null=True, blank=True)
     single_event = models.BooleanField(verbose_name='Single event', null=True, blank=True, default=True)
-    poster_event = models.ImageField(upload_to='catalog/images/events')
+    poster = models.TextField(max_length=60, blank=True, null=True)
 
     def __str__(self):
         return '{0} {1}'.format(self.type_event, self.title_event)
@@ -191,6 +183,15 @@ class Event(models.Model):
     @property
     def name_currency(self):
         return self.currency.currency_name
+
+
+class ImageEvent(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='event_name')
+    image = models.TextField(null=True, blank=True)
+    name_event = models.CharField(max_length=30, blank=True, null=True)
+
+    def __str__(self):
+        return self.name_event
 
 
 class LanguageMovie(models.Model):

@@ -63,6 +63,7 @@ class ImageEventSerializer(serializers.ModelSerializer):
 
 
 class EventSerializer(serializers.ModelSerializer):
+    images = ImageEventSerializer(many=True, read_only=True, source='event_name')
     event_type_name = serializers.ReadOnlyField()
     location_address = serializers.ReadOnlyField()
     location_lat = serializers.ReadOnlyField()
