@@ -163,6 +163,7 @@ class Event(models.Model):
     single_event = models.BooleanField(verbose_name='Single event', null=True, blank=True, default=True)
     poster = models.TextField(max_length=60, blank=True, null=True)
 
+
     def __str__(self):
         return '{0} {1}'.format(self.type_event, self.title_event)
 
