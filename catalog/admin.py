@@ -79,6 +79,10 @@ class CinemaAdmin(admin.ModelAdmin):
     pass
 
 
+class ImagePublicPlaceAdmin(admin.ModelAdmin):
+    pass
+
+
 admin.site.site_header = 'Cicerone Admin Panel'
 
 admin.site.register(Country, CountryAdmin)
@@ -99,3 +103,4 @@ admin.site.register(LanguageMovie, LanguageMovieAdmin)
 admin.site.register(ImageEvent, ImageAdmin)
 admin.site.register(Cinema, CinemaAdmin)
 admin.site.register(MovieSession, MovieSessionAdmin)
+admin.site.register(ImagePublicPlace, ImagePublicPlaceAdmin)

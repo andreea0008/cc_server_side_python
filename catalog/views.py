@@ -111,6 +111,11 @@ class ImageEventView(viewsets.ModelViewSet):
     serializer_class = ImageEventSerializer
 
 
+class ImagePublicPlaceView(viewsets.ModelViewSet):
+    queryset = ImagePublicPlace.objects.all()
+    serializer_class = ImagePublicPlaceSerializer
+
+
 class MovieSessionView(viewsets.ModelViewSet):
     queryset = MovieSession.objects.all()
     serializer_class = MovieSessionSerializer

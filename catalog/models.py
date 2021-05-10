@@ -36,6 +36,7 @@ class PublicPlace(models.Model):
     country = models.ForeignKey(Country, on_delete=models.CASCADE, null=True)
     city = models.ForeignKey(City, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True)
+    poster = models.TextField(null=True, blank=True)
 
     @property
     def public_place_city(self):
@@ -72,6 +73,11 @@ class PhoneContact(models.Model):
 
     def __str__(self):
         return '{0} {1} [{2}]'.format(self.location.public_place.name, self.location.address, self.phone)
+
+
+class ImagePublicPlace(models.Model):
+    public_place = models.ForeignKey(PublicPlace, on_delete=models.CASCADE, related_name="image_public_place")
+    image = models.TextField(null=True, blank=True)
 
 
 class WorkingSchedule(models.Model):

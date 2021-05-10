@@ -25,6 +25,7 @@ router.register('language_movie', views.LanguageMovieView)
 router.register('movie_session', views.MovieSessionView)
 router.register('image_event', views.ImageEventView)
 router.register('cinema', views.CinemaView)
+router.register('image_public_place', views.ImagePublicPlaceView)
 
 urlpatterns = [
     path('', include(router.urls)),

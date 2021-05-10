@@ -62,6 +62,12 @@ class ImageEventSerializer(serializers.ModelSerializer):
         fields = ['image', 'name_event']
 
 
+class ImagePublicPlaceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImagePublicPlace
+        fields = ['image']
+
+
 class EventSerializer(serializers.ModelSerializer):
     images = ImageEventSerializer(many=True, read_only=True, source='event_name')
     event_type_name = serializers.ReadOnlyField()
@@ -136,6 +142,7 @@ class PublicPlaceSerializer(serializers.ModelSerializer):
     location = LocationSerializer(many=True, read_only=True, source='locations')
     social_info = SocialInfoSerializer(many=True, read_only=True)
     movie_sessions = MovieSessionSerializer(many=True, read_only=True, source='movie_session')
+    images_public_place = ImagePublicPlaceSerializer(many=True, read_only=True, source='image_public_place')
     public_place_city = serializers.ReadOnlyField()
     public_place_country = serializers.ReadOnlyField()
     public_place_category = serializers.ReadOnlyField()
