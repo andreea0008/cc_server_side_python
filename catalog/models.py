@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models import CharField
 import PIL
 
@@ -51,8 +52,8 @@ class PublicPlace(models.Model):
         return self.category.name
 
     def __str__(self):
-        namePublicPlace = '{0} {1}'.format(self.city, self.name)
-        return namePublicPlace
+        name_public_place = '{0} {1}'.format(self.city, self.name)
+        return name_public_place
 
 
 class Location(models.Model):
@@ -152,6 +153,10 @@ class Currency(models.Model):
 class Event(models.Model):
     TYPE_MEETINGS = [('Online', 'online'), ('Offline', "offline")]
     type_of_meeting = models.CharField(max_length=20, blank=True, null=True, choices=TYPE_MEETINGS)
+    rating = models.PositiveIntegerField(default=0, blank=True, null=True, validators=[
+        MaxValueValidator(1000),
+        MinValueValidator(0)
+    ])
     type_event = models.ForeignKey(EventType, on_delete=models.CASCADE, related_name='event')
     location = models.ForeignKey(Location, on_delete=models.CASCADE, related_name='event_location')
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE, related_name='currency')
@@ -161,8 +166,8 @@ class Event(models.Model):
     start_data_event = models.DateTimeField(verbose_name='Start event')
     finish_data_event = models.DateTimeField(verbose_name='Finish event', null=True, blank=True)
     single_event = models.BooleanField(verbose_name='Single event', null=True, blank=True, default=True)
-    poster = models.TextField(max_length=60, blank=True, null=True)
-
+    poster = models.TextField(blank=True, null=True)
+    ticket_url = models.TextField(blank=True, null=True)
 
     def __str__(self):
         return '{0} {1}'.format(self.type_event, self.title_event)
@@ -195,10 +200,9 @@ class Event(models.Model):
 class ImageEvent(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='event_name')
     image = models.TextField(null=True, blank=True)
-    name_event = models.CharField(max_length=30, blank=True, null=True)
 
     def __str__(self):
-        return self.name_event
+        return self.event.title_event
 
 
 class LanguageMovie(models.Model):
@@ -208,11 +212,8 @@ class LanguageMovie(models.Model):
         return self.language
 
 
-class MovieEvent(Event):
-    TECHNOLOGIES = [('2d', '2D'), ('IMAX', "Imax"), ('3d', '3D'), ('dbox', 'DBOX'), ('4dx', '4DX')]
-
-    technologies = models.CharField(max_length=20, blank=True, null=True, choices=TECHNOLOGIES)
-
+class MovieEvent(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='event_movie_name')
     original_name = models.CharField(max_length=50, null=True, blank=True)
     duration_movie = models.TimeField(verbose_name='Duration movie', null=True, blank=True)
     IMDB_rating = models.FloatField('IMDB', null=True, blank=True)
@@ -256,7 +257,7 @@ class MovieEvent(Event):
 
 
 class Cinema(models.Model):
-    movie_name = models.ForeignKey(MovieEvent, on_delete=models.CASCADE, related_name='movie_name')
+    # movie_name = models.ForeignKey(MovieEvent, on_delete=models.CASCADE, related_name='movie_name')
     cinema_name = models.CharField(max_length=30, null=True, blank=True)
 
 
@@ -265,6 +266,7 @@ class MovieSession(models.Model):
 
     technologies = models.CharField(max_length=20, blank=True, null=True, choices=TECHNOLOGIES)
     cinema = models.ForeignKey(Cinema, on_delete=models.CASCADE, related_name='cinema')
+    movie_event = models.ForeignKey(MovieEvent, on_delete=models.CASCADE, related_name='movie_event')
     public_place = models.ForeignKey(PublicPlace, on_delete=models.CASCADE, related_name='movie_session')
     date = models.DateTimeField(null=True, blank=True)
     ticket_link = models.TextField(null=True, blank=True)
@@ -276,7 +278,10 @@ class MovieSession(models.Model):
     def currency_name(self):
         return self.currency.currency_name
 
+    @property
+    def cinema_name(self):
+        return self.public_place.name
+
     def __str__(self):
         return '{0} |      {1}     |      [{2} | {3}]'.format(self.cinema.cinema_name, self.public_place.name,
-                                              self.technologies, self.date)
-
+                                                              self.technologies, self.date)

@@ -92,7 +92,6 @@ class EventView(viewsets.ModelViewSet):
         return queryset
 
 
-
 class MovieEventView(viewsets.ModelViewSet):
     queryset = MovieEvent.objects.all()
     serializer_class = MovieEventSerializer

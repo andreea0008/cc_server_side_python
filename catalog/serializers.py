@@ -59,7 +59,7 @@ class CurrencySerializer(serializers.ModelSerializer):
 class ImageEventSerializer(serializers.ModelSerializer):
     class Meta:
         model = ImageEvent
-        fields = ['image', 'name_event']
+        fields = ['image']
 
 
 class ImagePublicPlaceSerializer(serializers.ModelSerializer):
@@ -68,8 +68,26 @@ class ImagePublicPlaceSerializer(serializers.ModelSerializer):
         fields = ['image']
 
 
+class MovieSessionSerializer(serializers.ModelSerializer):
+    currency_name = serializers.ReadOnlyField()
+    cinema_name = serializers.ReadOnlyField()
+
+    class Meta:
+        model = MovieSession
+        fields = '__all__'
+
+
+class MovieEventSerializer(serializers.ModelSerializer):
+    movie_session = MovieSessionSerializer(many=True, read_only=True, source='movie_event')
+
+    class Meta:
+        model = MovieEvent
+        fields = '__all__'
+
+
 class EventSerializer(serializers.ModelSerializer):
     images = ImageEventSerializer(many=True, read_only=True, source='event_name')
+    movie_list = MovieEventSerializer(many=True, read_only=True, source='event_movie_name')
     event_type_name = serializers.ReadOnlyField()
     location_address = serializers.ReadOnlyField()
     location_lat = serializers.ReadOnlyField()
@@ -88,34 +106,12 @@ class LanguageMovieSerializer(serializers.ModelSerializer):
         fields = ['language']
 
 
-class MovieSessionSerializer(serializers.ModelSerializer):
-    currency_name = serializers.ReadOnlyField()
-
-    class Meta:
-        model = MovieSession
-        fields = '__all__'
-
-
 class CinemaSerializer(serializers.ModelSerializer):
     movie_session = MovieSessionSerializer(many=True, read_only=True, source='cinema')
     language_movie = serializers.ReadOnlyField()
 
     class Meta:
         model = Cinema
-        fields = '__all__'
-
-
-class MovieEventSerializer(serializers.ModelSerializer):
-    cinema = CinemaSerializer(many=True, read_only=True, source='movie_name')
-    event_type_name = serializers.ReadOnlyField()
-    location_address = serializers.ReadOnlyField()
-    location_lat = serializers.ReadOnlyField()
-    location_lng = serializers.ReadOnlyField()
-    lacation_inclusive = serializers.ReadOnlyField()
-    name_currency = serializers.ReadOnlyField()
-
-    class Meta:
-        model = MovieEvent
         fields = '__all__'
 
 
