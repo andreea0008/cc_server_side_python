@@ -83,6 +83,14 @@ class ImagePublicPlaceAdmin(admin.ModelAdmin):
     pass
 
 
+class ClientMessageAdmin(admin.ModelAdmin):
+    pass
+
+
+class EventSessionAdmin(admin.ModelAdmin):
+    pass
+
+
 admin.site.site_header = 'Cicerone Admin Panel'
 
 admin.site.register(Country, CountryAdmin)
@@ -104,3 +112,5 @@ admin.site.register(ImageEvent, ImageAdmin)
 admin.site.register(Cinema, CinemaAdmin)
 admin.site.register(MovieSession, MovieSessionAdmin)
 admin.site.register(ImagePublicPlace, ImagePublicPlaceAdmin)
+admin.site.register(ClientMessage, ClientMessageAdmin)
+admin.site.register(EventSession, EventSessionAdmin)

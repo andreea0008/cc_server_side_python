@@ -8,7 +8,8 @@ from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 
 from .serializers import *
-
+from rest_framework.views import APIView
+from dateutil import parser
 
 class CategoryView(viewsets.ModelViewSet):
     queryset = Category.objects.all()
@@ -82,12 +83,18 @@ class EventView(viewsets.ModelViewSet):
         queryset = Event.objects.all()
         startdate = datetime.today()
         start_data_event_query_params = self.request.query_params.get('start_data_event')
-        print(start_data_event_query_params)
-        if start_data_event_query_params is not None:
-            startdate = datetime.strptime(start_data_event_query_params, "%Y-%m-%dT%H:%M:%SZ")
+        date_event_query_params = self.request.query_params.get('date')
 
-        enddate = startdate + timedelta(days=365)
-        queryset = Event.objects.filter(start_data_event__range=[startdate, enddate])
+        enddate = startdate + timedelta(days=30)
+        if date_event_query_params:
+            dt = datetime.strptime(date_event_query_params, '%Y-%m-%dT%H:%M:%S')
+            date = dt.date()
+            time = dt.time()
+
+            if startdate < dt:
+                startdate = dt
+
+            queryset = Event.objects.filter(sessions_event__date__range=[startdate, enddate])
 
         return queryset
 
@@ -125,3 +132,16 @@ class MovieSessionView(viewsets.ModelViewSet):
 class CinemaView(viewsets.ModelViewSet):
     queryset = Cinema.objects.all()
     serializer_class = CinemaSerializer
+
+
+class EventSessionView(viewsets.ModelViewSet):
+    queryset = EventSession.objects.all()
+    serializer_class = EventSessionSerializer
+
+
+class ClientMessageView(viewsets.ModelViewSet):
+    queryset = ClientMessage.objects.all()
+    serializer_class = ClientMessageSerializer
+
+
+

@@ -59,7 +59,7 @@ class CurrencySerializer(serializers.ModelSerializer):
 class ImageEventSerializer(serializers.ModelSerializer):
     class Meta:
         model = ImageEvent
-        fields = ['image']
+        fields = ['image', 'youtubeId']
 
 
 class ImagePublicPlaceSerializer(serializers.ModelSerializer):
@@ -77,6 +77,12 @@ class MovieSessionSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class EventSessionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = EventSession
+        fields = '__all__'
+
+
 class MovieEventSerializer(serializers.ModelSerializer):
     movie_session = MovieSessionSerializer(many=True, read_only=True, source='movie_event')
 
@@ -88,6 +94,8 @@ class MovieEventSerializer(serializers.ModelSerializer):
 class EventSerializer(serializers.ModelSerializer):
     images = ImageEventSerializer(many=True, read_only=True, source='event_name')
     movie_list = MovieEventSerializer(many=True, read_only=True, source='event_movie_name')
+    session_event = EventSessionSerializer(many=True, read_only=True, source='sessions_event')
+
     event_type_name = serializers.ReadOnlyField()
     location_address = serializers.ReadOnlyField()
     location_lat = serializers.ReadOnlyField()
@@ -148,4 +156,8 @@ class PublicPlaceSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ClientMessageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ClientMessage
+        fields = '__all__'
 

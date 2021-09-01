@@ -163,9 +163,9 @@ class Event(models.Model):
     title_event = models.CharField(max_length=40, blank=True, null=True)
     description_event = models.TextField(null=True, blank=True)
     cost_event = models.CharField(max_length=10, blank=True, null=True)
-    start_data_event = models.DateTimeField(verbose_name='Start event')
-    finish_data_event = models.DateTimeField(verbose_name='Finish event', null=True, blank=True)
-    single_event = models.BooleanField(verbose_name='Single event', null=True, blank=True, default=True)
+    # start_data_event = models.DateTimeField(verbose_name='Start event')
+    # finish_data_event = models.DateTimeField(verbose_name='Finish event', null=True, blank=True)
+    # single_event = models.BooleanField(verbose_name='Single event', null=True, blank=True, default=True)
     poster = models.TextField(blank=True, null=True)
     ticket_url = models.TextField(blank=True, null=True)
 
@@ -200,6 +200,7 @@ class Event(models.Model):
 class ImageEvent(models.Model):
     event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='event_name')
     image = models.TextField(null=True, blank=True)
+    youtubeId = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.event.title_event
@@ -210,6 +211,15 @@ class LanguageMovie(models.Model):
 
     def __str__(self):
         return self.language
+
+
+class EventSession(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='sessions_event')
+    date = models.DateTimeField(null=True, blank=True)
+    cost_event = models.CharField(max_length=10, blank=True, null=True, default=0)
+
+    def __str__(self):
+        return str('{0} | {1}').format(self.event.title_event, self.date)
 
 
 class MovieEvent(models.Model):
@@ -285,3 +295,9 @@ class MovieSession(models.Model):
     def __str__(self):
         return '{0} |      {1}     |      [{2} | {3}]'.format(self.cinema.cinema_name, self.public_place.name,
                                                               self.technologies, self.date)
+
+
+class ClientMessage(models.Model):
+    title_message = models.CharField(max_length=100, null=True, blank=True)
+    contact_info = models.CharField(max_length=100, null=True, blank=True)
+    text_message = models.TextField(null=True, blank=True)
