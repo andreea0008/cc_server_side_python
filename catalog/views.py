@@ -9,7 +9,6 @@ from rest_framework.response import Response
 
 from .serializers import *
 from rest_framework.views import APIView
-from dateutil import parser
 
 class CategoryView(viewsets.ModelViewSet):
     queryset = Category.objects.all()
