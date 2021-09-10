@@ -10,6 +10,6 @@ Pillow==8.2.0
 PyJWT==2.0.1
 pytz==2019.3
 simplejwt==2.0.1
-sqlparse==0.4.1
+sqlparse==0.4.2
 typing==3.7.4.3
 whitenoise==5.2.0
